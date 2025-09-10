@@ -74,7 +74,7 @@ FiveStarPlayerVS::FiveStarPlayerVS(QWidget* parent)
     settings->setAttribute(QWebEngineSettings::FocusOnNavigationEnabled, true);
 
     // --- ટચ અને સ્ક્રોલિંગ સુવિધાઓને સક્ષમ કરવી ---
-    QScroller::grabGesture(webView->view(), QScroller::TouchGesture);
+    QScroller::grabGesture(webView, QScroller::TouchGesture);
     settings->setAttribute(QWebEngineSettings::ScrollAnimatorEnabled, true);
 
     // શરૂઆતનો URL સેટ કરો

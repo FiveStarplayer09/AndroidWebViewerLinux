@@ -1,0 +1,18 @@
+# બિલ્ડ સિસ્ટમ દ્વારા બનાવેલી ફાઈલો
+Makefile*
+*.o
+*.obj
+*.stash
+*.user
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
+
+# બનાવેલી એપ્લિકેશન અને પેકેજો
+FiveStarPlayerVS
+*.deb
+
+# બિલ્ડ અને પેકેજિંગ ફોલ્ડર્સ
+build-*/
+my-app-package/
