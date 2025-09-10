@@ -12,11 +12,12 @@ class FiveStarPlayerVS : public QMainWindow
     Q_OBJECT
 
 public:
-    FiveStarPlayerVS(QWidget* parent = nullptr);
+    // કન્સ્ટ્રક્ટરને પ્રોક્સી સ્ટ્રિંગ મેળવવા માટે અપડેટ કર્યું
+    FiveStarPlayerVS(const QString& proxyString = "", QWidget* parent = nullptr);
     ~FiveStarPlayerVS();
 
 private:
-    Ui::FiveStarPlayerVSClass* ui; // ui ને પોઇન્ટર તરીકે જાહેર કર્યું
+    Ui::FiveStarPlayerVSClass* ui;
 
     // આપણા UI ઘટકો માટે વેરિએબલ
     QLineEdit* addressBar;

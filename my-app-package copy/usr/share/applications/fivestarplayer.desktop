@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=FiveStarPlayerVS
+Comment=Browse websites with an Android-like experience
+Exec=/usr/local/bin/FiveStarPlayerVS
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;

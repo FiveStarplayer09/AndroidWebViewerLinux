@@ -54,31 +54,31 @@ Now, we will package the compiled application into a `.deb` installer file.
 
 ```bash
 # 1. Create the necessary directory structure
-mkdir -p my-app-package/DEBIAN
-mkdir -p my-app-package/usr/local/bin
-mkdir -p my-app-package/usr/share/applications
+mkdir -p my-app-package-FiveStarPlayerVS/DEBIAN
+mkdir -p my-app-package-FiveStarPlayerVS/usr/local/bin
+mkdir -p my-app-package-FiveStarPlayerVS/usr/share/applications
 
 # 2. Copy the executable to the correct location
-cp FiveStarPlayerVS my-app-package/usr/local/bin/
+cp FiveStarPlayerVS my-app-package-FiveStarPlayerVS/usr/local/bin/
 
 # 3. Create the control file with package metadata
-cat <<EOF > my-app-package/DEBIAN/control
-Package: fivestarplayer
+cat <<EOF > my-app-package-FiveStarPlayerVS/DEBIAN/control
+Package: FiveStarPlayerVS
 Version: 1.0.0
 Section: web
 Priority: optional
 Architecture: amd64
 Depends: libqt6core6, libqt6gui6, libqt6widgets6, libqt6webenginewidgets6
-Maintainer: Your Name <youremail@example.com>
-Description: Android Web Viewer
+Maintainer: DipakKumar <dipak823864@gmail.com>
+Description: FiveStarPlayerVS
  A simple browser that mimics an Android device for web browsing.
 EOF
 
 # 4. Create a .desktop file for the application menu shortcut
-cat <<EOF > my-app-package/usr/share/applications/fivestarplayer.desktop
+cat <<EOF > my-app-package-FiveStarPlayerVS/usr/share/applications/fivestarplayer.desktop
 [Desktop Entry]
 Version=1.0
-Name=Android Web Viewer
+Name=FiveStarPlayerVS
 Comment=Browse websites with an Android-like experience
 Exec=/usr/local/bin/FiveStarPlayerVS
 Icon=utilities-terminal
@@ -88,20 +88,20 @@ Categories=Network;WebBrowser;
 EOF
 
 # 5. Set the correct permissions for the DEBIAN directory
-chmod 755 my-app-package/DEBIAN
+chmod 755 my-app-package-FiveStarPlayerVS/DEBIAN
 
 # 6. Build the final .deb package
-dpkg-deb --build my-app-package
+dpkg-deb --build my-app-package-FiveStarPlayerVS
 ```
 
-After these steps, a file named `my-app-package.deb` will be created. You can download this file and install it on any Ubuntu/Debian-based system.
+After these steps, a file named `my-app-package-FiveStarPlayerVS.deb` will be created. You can download this file and install it on any Ubuntu/Debian-based system.
 
 ### How to Install
 
 To install the package on a Linux machine, copy the `.deb` file to it, open a terminal, navigate to the file's location, and run:
 
 ```bash
-sudo apt install ./my-app-package.deb
+sudo apt install ./my-app-package-FiveStarPlayerVS.deb
 ```
 
 
