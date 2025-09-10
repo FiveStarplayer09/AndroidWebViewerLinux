@@ -4,117 +4,126 @@ AndroidWebViewerLinux
 **Wellcome:** This Project created **using VS 2022** and **C++** and **QT** lib...
 
 
-For Run for Use This code on Trminal:
-### ભાગ ૧: તૈયારી (તમારા Windows કમ્પ્યુટર પર)
+# Android Web Viewer for Linux
 
-### ભાગ ૨: નિર્માણ (તમારા વેબ બ્રાઉઝરમાં)
+This project is a simple, lightweight web browser built with C++ and the Qt framework. It is designed to mimic an Android browser's user agent and behavior, allowing users to view the mobile version of websites on a Linux desktop.
 
-#### પગલું ૨.૧: GitHub Codespace શરૂ કરો
-1.  તમે જે રિપોઝિટરી બનાવી છે, તેના મુખ્ય પેજ પર જાઓ.
-2.  લીલા રંગના **`< > Code`** બટન પર ક્લિક કરો.
-3.  **`Codespaces`** ટેબ પસંદ કરો.
-4.  **`Create codespace on main`** બટન દબાવો.
-5.  થોડીવાર રાહ જુઓ. GitHub તમારા માટે ક્લાઉડમાં એક Linux મશીન તૈયાર કરશે અને તમારા બ્રાઉઝરમાં જ VS Code જેવું એડિટર ખુલશે.
+This repository contains the source code originally developed in Visual Studio 2022, now adapted for building on a Linux environment.
 
-#### પગલું ૨.૨: Codespace માં જરૂરી સાધનો ઇન્સ્ટોલ કરો
-1.  Codespace માં નીચેની બાજુએ **ટર્મિનલ (Terminal)** ખુલશે. જો ન ખુલે, તો ઉપરના મેનુમાંથી `Terminal` -> `New Terminal` પર જાઓ.
-2.  ટર્મિનલમાં, નીચે આપેલા કમાન્ડ્સ એક પછી એક કૉપિ-પેસ્ટ કરીને `Enter` દબાવો:
+## Features
 
+- **Android User Agent Spoofing**: Identifies itself as a Google Pixel 7 to receive mobile-optimized web pages.
+- **Advanced Fingerprint Spoofing**: Uses JavaScript injection to mask browser properties like `navigator.platform`, `webdriver`, etc., to minimize bot detection.
+- **Touch-like Scrolling**: Implements kinetic scrolling, allowing users to scroll by clicking and dragging, similar to a touch device.
+- **Persistent Data**: Saves cookies and session data to provide a consistent browsing experience and avoid repeated CAPTCHAs.
+
+## How to Build a `.deb` Package from this Source Code
+
+These instructions are for a Debian-based Linux environment, such as Ubuntu. You can easily build the project using a cloud environment like GitHub Codespaces.
+
+### Step 1: Set Up the Environment
+
+First, you need to install the necessary tools and Qt6 libraries. Open a terminal and run the following commands:
+
+```bash
+# Update package list and install build tools
+sudo apt-get update
+sudo apt-get install -y build-essential libgl1-mesa-dev
+
+# Install required Qt6 development packages
+sudo apt-get install -y qt6-base-dev qt6-webengine-dev
+```
+
+### Step 2: Compile the Application
+
+Once the environment is set up, you can compile the source code using `qmake6` and `make`.
+
+```bash
+# Generate the Makefile from the .pro file
+qmake6 FiveStarPlayerVS.pro
+
+# Compile the source code using all available CPU cores
+make -j$(nproc)
+```
+
+After a successful compilation, an executable file named `FiveStarPlayerVS` will be created in the project directory.
+
+### Step 3: Create the `.deb` Package
+
+Now, we will package the compiled application into a `.deb` installer file.
+
+```bash
+# 1. Create the necessary directory structure
+mkdir -p my-app-package/DEBIAN
+mkdir -p my-app-package/usr/local/bin
+mkdir -p my-app-package/usr/share/applications
+
+# 2. Copy the executable to the correct location
+cp FiveStarPlayerVS my-app-package/usr/local/bin/
+
+# 3. Create the control file with package metadata
+cat <<EOF > my-app-package/DEBIAN/control
+Package: fivestarplayer
+Version: 1.0.0
+Section: web
+Priority: optional
+Architecture: amd64
+Depends: libqt6core6, libqt6gui6, libqt6widgets6, libqt6webenginewidgets6
+Maintainer: Your Name <youremail@example.com>
+Description: Android Web Viewer
+ A simple browser that mimics an Android device for web browsing.
+EOF
+
+# 4. Create a .desktop file for the application menu shortcut
+cat <<EOF > my-app-package/usr/share/applications/fivestarplayer.desktop
+[Desktop Entry]
+Version=1.0
+Name=Android Web Viewer
+Comment=Browse websites with an Android-like experience
+Exec=/usr/local/bin/FiveStarPlayerVS
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+EOF
+
+# 5. Set the correct permissions for the DEBIAN directory
+chmod 755 my-app-package/DEBIAN
+
+# 6. Build the final .deb package
+dpkg-deb --build my-app-package
+```
+
+After these steps, a file named `my-app-package.deb` will be created. You can download this file and install it on any Ubuntu/Debian-based system.
+
+### How to Install
+
+To install the package on a Linux machine, copy the `.deb` file to it, open a terminal, navigate to the file's location, and run:
+
+```bash
+sudo apt install ./my-app-package.deb
+```
+
+
+Github માં સેવ કરવા માટે:
+
+0. જો .gitignore` ફાઇલ ન હોય તો     `touch .gitignore` બનાવો:
     ```bash
-    # સિસ્ટમને અપડેટ કરો અને જરૂરી બિલ્ડ ટૂલ્સ ઇન્સ્ટોલ કરો
-    sudo apt-get update && sudo apt-get install -y build-essential libgl1-mesa-dev
-
-    # Qt6 અને Qt6 WebEngine ના ડેવલપમેન્ટ પેકેજો ઇન્સ્ટોલ કરો
-    sudo apt-get install -y qt6-base-dev qt6-webengine-dev
+    touch .gitignore
     ```
-    આ પ્રક્રિયામાં થોડી મિનિટો લાગી શકે છે.
 
-#### પગલું ૨.૩: પ્રોજેક્ટને કમ્પાઇલ કરો
-હવે જ્યારે બધા સાધનો ઇન્સ્ટોલ થઈ ગયા છે, ત્યારે આપણે પ્રોજેક્ટને બનાવીશું.
 
-1.  ટર્મિનલમાં, નીચેના કમાન્ડ્સ ચલાવો:
-
+1.  **બધા ફેરફારોને સેવ લિસ્ટમાં ઉમેરો** (આ વખતે `README.md` માટે):
     ```bash
-    # 1. qmake ચલાવીને Makefile બનાવો (આપણે qmake6 નો ઉપયોગ કરીશું કારણ કે આપણે Qt6 ઇન્સ્ટોલ કર્યું છે)
-    qmake6 FiveStarPlayerVS.pro
-
-    # 2. make ચલાવીને કોડને કમ્પાઇલ કરો (આમાં થોડો સમય લાગી શકે છે)
-    make -j$(nproc)
+    git add .
     ```
-    *(`-j$(nproc)` એ કમ્પાઇલેશન પ્રક્રિયાને ઝડપી બનાવવા માટે કમ્પ્યુટરના બધા જ CPU કોરનો ઉપયોગ કરવાનું કહે છે.)*
-
-2.  જો કોઈ ભૂલ વગર કમ્પાઇલેશન પૂર્ણ થાય, તો અભિનંદન! તમે સફળતાપૂર્વક તમારી એપ્લિકેશનનું Linux સંસ્કરણ બનાવી લીધું છે. ડાબી બાજુની ફાઇલ એક્સપ્લોરરમાં, તમને હવે **`FiveStarPlayerVS`** (કોઈ એક્સટેન્શન વિના) નામની એક નવી ફાઇલ દેખાશે. આ તમારી Linux એપ્લિકેશન છે.
-
----
-
-### ભાગ ૩: પેકેજિંગ (`.deb` ફાઇલ બનાવવી)
-
-હવે આપણે આ બનાવેલી એપ્લિકેશનને એક ઇન્સ્ટોલર (`.deb` ફાઇલ) માં પેક કરીશું.
-
-#### પગલું ૩.૧: પેકેજનું માળખું બનાવો
-1.  ટર્મિનલમાં, નીચેના કમાન્ડ્સ ચલાવીને જરૂરી ફોલ્ડર બનાવો:
-
+2.  **ફેરફારોનું વર્ણન કરો:**
     ```bash
-    # પેકેજ માટે એક નવું ફોલ્ડર બનાવો
-    mkdir -p my-app-package/DEBIAN
-    mkdir -p my-app-package/usr/local/bin
-    mkdir -p my-app-package/usr/share/applications
+    git commit -m "Update README.md with build instructions"
     ```
-
-#### પગલું ૩.૨: જરૂરી ફાઈલો કૉપિ કરો
-1.  આપણી બનાવેલી એપ્લિકેશનને યોગ્ય જગ્યાએ કૉપિ કરો:
-
+3.  **બધું જ GitHub પર મોકલી દો:**
     ```bash
-    cp FiveStarPlayerVS my-app-package/usr/local/bin/
+    git push
     ```
 
-#### પગલું ૩.૩: કંટ્રોલ અને ડેસ્કટોપ ફાઇલ બનાવો
-1.  હવે આપણે બે નાની ટેક્સ્ટ ફાઈલો બનાવવાની છે.
-
-    **a) કંટ્રોલ ફાઇલ (`control`):** આ ફાઇલ પેકેજ વિશેની માહિતી આપે છે.
-    આ કમાન્ડ ચલાવીને ફાઇલ બનાવો અને તેમાં માહિતી લખો:
-
-    ```bash
-    cat <<EOF > my-app-package/DEBIAN/control
-    Package: fivestarplayer
-    Version: 1.0.0
-    Section: base
-    Priority: optional
-    Architecture: amd64
-    Depends: libqt6core6, libqt6gui6, libqt6widgets6, libqt6webenginewidgets6
-    Maintainer: Your Name <youremail@example.com>
-    Description: Android Web Viewer
-     A simple browser that mimics an Android device.
-    EOF
-    ```
-    *(`Your Name` અને `youremail@example.com` ને તમારી વિગતોથી બદલી નાખજો.)*
-
-    **b) ડેસ્કટોપ ફાઇલ (`.desktop`):** આ ફાઇલ એપ્લિકેશનને Linux ના એપ્લિકેશન મેનુમાં બતાવવા માટે છે.
-    આ કમાન્ડ ચલાવીને ફાઇલ બનાવો:
-
-    ```bash
-    cat <<EOF > my-app-package/usr/share/applications/fivestarplayer.desktop
-    [Desktop Entry]
-    Version=1.0
-    Name=Five Star Player
-    Comment=Android Web Viewer
-    Exec=/usr/local/bin/FiveStarPlayerVS
-    Terminal=false
-    Type=Application
-    Categories=Network;WebBrowser;
-    EOF
-    ```
-
-#### પગલું ૩.૪: `.deb` ફાઇલ બનાવો
-1.  હવે આપણે અંતિમ કમાન્ડ ચલાવીશું જે આ બધા ફોલ્ડર્સને એક `.deb` ફાઇલમાં પેક કરી દેશે:
-
-    ```bash
-    dpkg-deb --build my-app-package
-    ```
-2.  બસ! આ કમાન્ડ પૂરો થયા પછી, તમને **`my-app-package.deb`** નામની એક નવી ફાઇલ દેખાશે. આ તમારી ઇન્સ્ટોલર ફાઇલ છે.
-
-#### પગલું ૩.૫: ફાઇલ ડાઉનલોડ કરો
-1.  Codespace માં ડાબી બાજુના ફાઇલ એક્સપ્લોરરમાં, **`my-app-package.deb`** ફાઇલ પર **રાઇટ-ક્લિક** કરો.
-2.  **`Download`** વિકલ્પ પસંદ કરો.
-
-હવે તમે આ `.deb` ફાઇલને કોઈપણ Ubuntu/Debian-આધારિત Linux સિસ્ટમમાં ઇન્સ્ટોલ કરી શકો છો
+હવે તમારી GitHub રિપોઝિટરી સંપૂર્ણપણે તૈયાર, અપડેટેડ અને ખૂબ જ વ્યાવસાયિક દેખાશે
